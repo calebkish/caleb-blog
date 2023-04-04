@@ -40,7 +40,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/caleb-blog",
+            "outputPath": "dist/caleb-blog/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -118,6 +118,59 @@
             ],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/caleb-blog/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media"
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false,
+              "vendorChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "caleb-blog:build:development",
+              "serverTarget": "caleb-blog:server:development"
+            },
+            "production": {
+              "browserTarget": "caleb-blog:build:production",
+              "serverTarget": "caleb-blog:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "caleb-blog:build:production",
+              "serverTarget": "caleb-blog:server:production"
+            },
+            "development": {
+              "browserTarget": "caleb-blog:build:development",
+              "serverTarget": "caleb-blog:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
